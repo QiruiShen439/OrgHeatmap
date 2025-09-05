@@ -25,7 +25,7 @@ First install devtools if missing, then install from GitHub:
 ```r
 # Install devtools if not already installed
 if (!require("devtools")) install.packages("devtools")
-devtools::install_github("your-username/OrgHeatmap")
+devtools::install_github("QiruiShen439/OrgHeatmap")
 ```
 ### Required Dependencies
 Install all dependent packages to ensure smooth operation:
@@ -184,4 +184,5 @@ browseVignettes("OrgHeatmap")
 
 ## Maintainer
 - Qirui Shen
+
 - Email: shenqr@i.smu.edu.cn
