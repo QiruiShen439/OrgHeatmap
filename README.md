@@ -20,7 +20,7 @@ Replace with your actual package file path:
 install.packages("OrgHeatmap_0.1.0.tar.gz", repos = NULL, type = "source")
 ```
 
-### From GitHub (if available)
+### From GitHub 
 First install devtools if missing, then install from GitHub:
 ```r
 # Install devtools if not already installed
@@ -186,3 +186,4 @@ browseVignettes("OrgHeatmap")
 - Qirui Shen
 
 - Email: shenqr@i.smu.edu.cn
+
