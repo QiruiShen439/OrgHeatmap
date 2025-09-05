@@ -1,0 +1,37 @@
+Package: OrgHeatmap
+Title: Visualization Tool for Human Organ Data
+Version: 0.1.0
+Authors@R: 
+    person("Qirui", "Shen", ,"shenqr@i.smu.edu.cn", role = c("aut", "cre"))
+Description: A tool for visualizing numerical data (such as gene expression levels) 
+  on human organ maps. It supports custom color schemes, organ system filtering, 
+  and optional bar charts for quantitative comparison. The package integrates organ 
+  coordinate data to plot anatomical contours and map data values to specific organs, 
+  facilitating intuitive visualization of biological data distribution.
+Depends:
+  R (>= 3.5),
+  ggplot2 (>= 3.5.0)
+Imports:
+  ggpolypath(>= 0.3.0),
+  dplyr,
+  magrittr,
+  rlang,
+  stringr,
+  patchwork,
+  purrr,
+  stringdist,
+  data.table,
+  RColorBrewer,
+  grDevices
+Suggests: 
+    knitr,
+    svglite,
+    rmarkdown,
+    testthat (>= 3.0.0)
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+LazyData: true
+Config/testthat/edition: 3
+VignetteBuilder: knitr

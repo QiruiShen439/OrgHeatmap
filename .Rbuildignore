@@ -1,0 +1,14 @@
+^OrgHeatmap\.Rproj$  
+^.*\.Rproj$    
+^\.Rhistory$         
+^\.github/            
+^README\.md$      
+^.*LICENSE\.md$       
+^\.DS_Store$          
+^data-raw/            
+^docs/                
+^vignettes/.*\.html$  
+^doc$
+^Meta$
+^\.Rproj\.user$
+^README_cache/
