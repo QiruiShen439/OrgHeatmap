@@ -40,7 +40,8 @@ install.packages(c("ggpolypath", "patchwork", "dplyr", "stringdist", "ggplot2"))
 library(OrgHeatmap)
 
 # Load built-in example dataset
-data(example_Data3, package = "OrgHeatmap")
+file_path <- system.file("extdata", "exampledata.Rdata", package = "OrgHeatmap")
+load(file_path)
 
 # Inspect data structure (organ names and corresponding values)
 head(example_Data3)
@@ -186,4 +187,5 @@ browseVignettes("OrgHeatmap")
 - Qirui Shen
 
 - Email: shenqr@i.smu.edu.cn
+
 
