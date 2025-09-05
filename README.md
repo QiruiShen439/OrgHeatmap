@@ -174,7 +174,6 @@ browseVignettes("OrgHeatmap")
 
 # View function documentation
 ?OrgHeatmap          # Main visualization function
-?define_organ_colors    # Color configuration helper function
 ```
 
 ## Troubleshooting
@@ -187,5 +186,6 @@ browseVignettes("OrgHeatmap")
 - Qirui Shen
 
 - Email: shenqr@i.smu.edu.cn
+
 
 
