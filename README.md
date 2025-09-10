@@ -25,7 +25,7 @@ First install devtools if missing, then install from GitHub:
 ```r
 # Install devtools if not already installed
 if (!require("devtools")) install.packages("devtools")
-devtools::install_github("your-username/OrgHeatmap")
+devtools::install_github("QiruiShen439/OrgHeatmap")
 ```
 ### Required Dependencies
 Install all dependent packages to ensure smooth operation:
@@ -40,7 +40,8 @@ install.packages(c("ggpolypath", "patchwork", "dplyr", "stringdist", "ggplot2"))
 library(OrgHeatmap)
 
 # Load built-in example dataset
-data(example_Data3, package = "OrgHeatmap")
+file_path <- system.file("extdata", "exampledata.Rdata", package = "OrgHeatmap")
+load(file_path)
 
 # Inspect data structure (organ names and corresponding values)
 head(example_Data3)
@@ -173,7 +174,6 @@ browseVignettes("OrgHeatmap")
 
 # View function documentation
 ?OrgHeatmap          # Main visualization function
-?define_organ_colors    # Color configuration helper function
 ```
 
 ## Troubleshooting
