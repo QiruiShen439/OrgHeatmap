@@ -2,10 +2,11 @@
 % Please edit documentation in R/OrgHeatmap.R
 \name{OrgHeatmap}
 \alias{OrgHeatmap}
-\title{Visualization Tool for Human Organ Data}
+\title{Visualization Tool for Human, Mouse and Organelle Data}
 \usage{
 OrgHeatmap(
   data,
+  species = c("human", "mouse", "organelle"),
   system = NULL,
   valid_organs = NULL,
   sort_by_value = TRUE,
@@ -17,7 +18,7 @@ OrgHeatmap(
   color_low = NULL,
   color_mid = NULL,
   reverse_palette = FALSE,
-  fillcolor_outline = "#F5D5B8",
+  fillcolor_outline = NULL,
   fillcolor_organ = "plasma",
   fillcolor_other = "#D3D3D3",
   organbar = TRUE,
@@ -35,7 +36,7 @@ OrgHeatmap(
   plot_height = 8,
   plot_dpi = 300,
   plot_device = "png",
-  organ_system_map = organ_systems,
+  organ_system_map = NULL,
   organ_name_mapping = NULL,
   aggregate_method = "mean",
   organ_col = "organ",
@@ -45,7 +46,10 @@ OrgHeatmap(
 \arguments{
 \item{data}{Data frame with at least two columns: organ name and corresponding value}
 
-\item{system}{Optional character vector specifying organ system to display}
+\item{species}{Character, species to visualize, one of \code{"human"} (default), \code{"mouse"}, or \code{"organelle"}.
+Determines the default body/cell contour, organ coordinates, and organ-system mapping.}
+
+\item{system}{Optional character vector specifying organ system to display(not applicable for organelles)}
 
 \item{valid_organs}{Optional character vector of valid organ names for filtering}
 
@@ -55,7 +59,7 @@ OrgHeatmap(
 
 \item{showall}{Logical, default FALSE. If TRUE, shows all organ outlines (grey) with light grey fill (#EFEFEF) for non-target organs (to provide anatomical context).}
 
-\item{outline}{Logical, default TRUE, draws human outline}
+\item{outline}{Logical, default TRUE, draws human/cell outline}
 
 \item{palette}{Character, name of RColorBrewer palette (e.g., "YlOrRd", "PuBuGn") for unified color scheme (applies to both organ heatmap and bar chart if no custom colors are specified).
 Ignored if \code{color_low}/\code{color_high} (for heatmap) or \code{organbar_low}/\code{organbar_high} (for bar chart) are specified. Default: "YlOrRd" (suitable for highlighting high values).}
@@ -68,11 +72,11 @@ Ignored if \code{color_low}/\code{color_high} (for heatmap) or \code{organbar_lo
 
 \item{reverse_palette}{Logical, whether to reverse the color order of \code{palette}. Default: FALSE (low=light, high=dark).}
 
-\item{fillcolor_outline}{Character, default "#F5D5B8", fill color for outline}
+\item{fillcolor_outline}{Character, default "#F5D5B8" for human/mouse, "#F0F8FF" for organelle, fill color for outline}
 
 \item{fillcolor_organ}{Character, fallback color scheme for organs (supports viridis options: "viridis", "plasma", "magma", etc.). Only used if no \code{palette}, \code{color_low/color_high}, or \code{organbar_low/organbar_high} are specified. Default: "plasma".}
 
-\item{fillcolor_other}{Character, default "#D3D3D3", fill color for non-target organs}
+\item{fillcolor_other}{Character, default "#D3D3D3", fill color for non-target organelles}
 
 \item{organbar}{Logical, default TRUE, shows value bar chart}
 
@@ -104,8 +108,8 @@ Ignored if \code{color_low}/\code{color_high} (for heatmap) or \code{organbar_lo
 
 \item{plot_device}{Character, default "png", plot format (e.g., "png", "pdf")}
 
-\item{organ_system_map}{Data frame, default organ_systems. Can be a custom data frame or CSV path
-(must contain 'organ' and 'system' columns), processed by internal \code{create_organ_mapping()}.}
+\item{organ_system_map}{Data frame, CSV path, or NULL (default). If NULL, uses species-specific defaults:
+\code{human_organ_systems} for humans, \code{mouse_organ_systems} for mice, or \code{organelle_systems} for organelles.}
 
 \item{organ_name_mapping}{Optional: Either a named vector (non-standard → standard names, e.g., c("adrenal" = "adrenal_gland")),
 a data frame (must contain columns specified by \code{original_col} and \code{standard_col}), or a CSV path (same column requirement).
@@ -128,11 +132,11 @@ List containing:
 \item{total_value}{Sum of all values}
 }
 \description{
-This tool visualizes numerical data (such as gene expression) on a human organ map.
+This tool visualizes numerical data (such as gene expression) on a human, mouse or organelle map.
 It supports custom color schemes, organ system filtering, and bar charts for quantitative comparison.
 }
 \details{
-The function uses \code{define_organ_colors()} (an internal helper function) to generate unified color schemes:
+The function uses \code{get_component_colors()} (an internal helper function) to generate unified color schemes:
 \enumerate{
 \item If \code{organbar_low} and \code{organbar_high} are specified by the user, they will be used directly (highest priority);
 \item If not, colors are generated from the \code{palette} (RColorBrewer) with optional reversal (\code{reverse_palette});
@@ -144,12 +148,13 @@ For valid \code{palette} names, see \code{RColorBrewer::brewer.pal.info}.
 \item For \code{organ_name_mapping}: Accepts a named vector, data frame, or CSV path.
 Internal helper \code{create_organ_mapping()} standardizes names (lowercase, underscores for spaces).
 \item For \code{organ_system_map}: Custom tables (data frame/CSV) are processed to align with
-built-in \code{organ_systems} format via \code{create_organ_mapping()}.
+built-in \code{human_organ_systems} (for humans), \code{mouse_organ_systems} (for mice), or \code{organelle_systems} (for organelles)
+format via \code{create_organ_mapping()}.
 }
 }
 }
 \examples{
-\dontrun{
+\donttest{
 # Load the package
 library(OrgHeatmap)
 
@@ -177,10 +182,10 @@ print(result_all$plot)  # Print the plot to the console
 result_circulatory <- OrgHeatmap(
   example_Data3, 
   system = "circulatory",
-  organbar = TRUE,
+ organbar = TRUE,
   save_plot = TRUE,
-  plot_path = file.path(getwd(), "circulatory_system.png"),
-  plot_width = 10,
+ plot_path = file.path(getwd(), "circulatory_system.png"),
+ plot_width = 10,
   plot_height = 8,
   plot_device = "png",  # Specify plot format
   save_clean_data = TRUE,
@@ -223,7 +228,7 @@ custom_mapping <- c(
 
 # Add prostate cancer-specific organs to system mapping
 prostate_organ_systems <- rbind(
-  organ_systems,  # Package's built-in organ system mapping
+  human_organ_systems,  # Package's built-in organ system mapping
   data.frame(
     organ = c("prostate", "bone", "lymph_node", "adrenal_gland"),
     system = c("reproductive", "musculoskeletal", "lymphatic", "endocrine"),
@@ -255,6 +260,39 @@ tp53_plot <- OrgHeatmap(
 
 # Print the plot
 print(tp53_plot$plot)
+
+# 4.Plot mouse digestive system
+# Load mouse example data (included in the package)
+mouse_data_path <- system.file("extdata", "exampledata.Rdata", package = "OrgHeatmap")
+load(mouse_data_path)
+
+# Generate plot for mouse digestive system
+mouse_digestive_plot <- OrgHeatmap(
+data = example_Data1,
+species = "mouse",  # Specify mouse species
+system = "digestive",
+organbar = TRUE,
+palette = "PuBu",
+save_plot = TRUE,
+plot_path = file.path(getwd(), "mouse_digestive_plot.png"),
+save_clean_data = TRUE
+)
+print(mouse_digestive_plot$plot)
 }
+
+ # 5. Plot organelles 
+organelle_data <- data.frame(
+ organ = c("mitochondrion", "nucleus", "endoplasmic_reticulum","cell_membrane"),
+ value = c(15.2, 8.7, 6.3,6.8)
+)
+
+organelle_plot <- OrgHeatmap(
+ data = organelle_data,
+ species = "organelle",
+title = "Organelle Expression Visualization",
+organbar_title = "Expression Level",
+save_plot = TRUE,
+plot_path = file.path(getwd(), "organelle_expression_plot.png")
+)
 
 }

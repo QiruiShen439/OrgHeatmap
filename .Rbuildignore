@@ -12,3 +12,6 @@
 ^Meta$
 ^\.Rproj\.user$
 ^README_cache/
+^\.github$
+^LICENSE\.md$
+^CRAN-SUBMISSION$

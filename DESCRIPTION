@@ -1,13 +1,9 @@
 Package: OrgHeatmap
-Title: Visualization Tool for Human Organ Data
-Version: 0.1.0
+Title: Visualization Tool For Numerical Data on Human/Mouse Organs and Organelles
+Version: 0.3.0
 Authors@R: 
     person("Qirui", "Shen", ,"shenqr@i.smu.edu.cn", role = c("aut", "cre"))
-Description: A tool for visualizing numerical data (such as gene expression levels) 
-  on human organ maps. It supports custom color schemes, organ system filtering, 
-  and optional bar charts for quantitative comparison. The package integrates organ 
-  coordinate data to plot anatomical contours and map data values to specific organs, 
-  facilitating intuitive visualization of biological data distribution.
+Description: A tool for visualizing numerical data (e.g., gene expression, protein abundance) on pre-defined anatomical maps of human/mouse organs and subcellular organelles. It supportscustomization of color schemes, filtering by organ systems (for organisms) or organelle types, and generation of optional bar charts for quantitative comparison. The package integrates coordinate data for organs and organelles to plot anatomical/subcellular contours, mapping data values to specific structures for intuitive visualization of biological data distribution.The underlying method was described in the preprint by Zhou et al. (2022) <doi:10.1101/2022.09.07.506938>.
 Depends:
   R (>= 3.5),
   ggplot2 (>= 3.5.0)
@@ -20,9 +16,13 @@ Imports:
   patchwork,
   purrr,
   stringdist,
+  sf,
+  stats,
+  utils,
   data.table,
   RColorBrewer,
-  grDevices
+  grDevices,
+  viridis (>= 0.6.0)
 Suggests: 
     knitr,
     svglite,
