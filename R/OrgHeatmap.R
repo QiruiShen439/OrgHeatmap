@@ -71,11 +71,11 @@
 #'   example_Data3, 
 #'   organbar = TRUE,
 #'   save_plot = TRUE,  # Enable plot saving
-#'   plot_path = file.path(getwd(), "all_system.png"),  # Save to current directory
+#'   plot_path = file.path(tempdir(), "all_system.png"),  
 #'   plot_width = 10,
 #'   plot_height = 8,
 #'   save_clean_data = TRUE,  # Enable cleaned data saving
-#'   clean_data_path = file.path(getwd(), "all_system_clean_data.rds")
+#'   clean_data_path = file.path(tempdir(), "all_system_clean_data.rds")
 #' )
 #' print(result_all$plot)  # Print the plot to the console
 #' 
@@ -85,12 +85,12 @@
 #'   system = "circulatory",
 #'  organbar = TRUE,
 #'   save_plot = TRUE,
-#'  plot_path = file.path(getwd(), "circulatory_system.png"),
+#'  plot_path = file.path(tempdir(), "circulatory_system.png"),
 #'  plot_width = 10,
 #'   plot_height = 8,
 #'   plot_device = "png",  # Specify plot format
 #'   save_clean_data = TRUE,
-#'   clean_data_path = file.path(getwd(), "circulatory_clean_data.rds")
+#'   clean_data_path = file.path(tempdir(), "circulatory_clean_data.rds")
 #' )
 #' print(result_circulatory$plot)  # Print the plot to the console
 #' 
@@ -108,7 +108,7 @@
 #'organbar_digit = 2,
 #'showall = TRUE,
 #'save_plot = TRUE,
-#'plot_path = file.path(getwd(), "respiratory_palette.png")
+#'plot_path = file.path(tempdir(),"respiratory_palette.png")
 #'   # To use solid color for bars, add parameter: organbar_color = "skyblue"
 #'   # (overrides gradient and synchronizes with organ colors)
 #')
@@ -151,12 +151,12 @@
 #'   organbar_digit = 2,  # Keep 2 decimal places for bar values
 #'   direction = -1,  # Reverse color gradient (darker = higher expression)
 #'   save_plot = TRUE,  # Save the plot
-#'   plot_path = file.path(getwd(), "tp53_expression_metastatic_prostate.png"),
+#'   plot_path = file.path(tempdir(), "tp53_expression_metastatic_prostate.png"),
 #'   plot_width = 14,
 #'   plot_height = 10,
 #'   plot_dpi = 300,
 #'   save_clean_data = TRUE,  # Save cleaned data
-#'   clean_data_path = file.path(getwd(), "tp53_clean_data.rds")
+#'   clean_data_path = file.path(tempdir(), "tp53_clean_data.rds")
 #' )
 #' 
 #' # Print the plot
@@ -175,7 +175,7 @@
 #' organbar = TRUE,
 #' palette = "PuBu",
 #' save_plot = TRUE,
-#' plot_path = file.path(getwd(), "mouse_digestive_plot.png"),
+#' plot_path = file.path(tempdir(), "mouse_digestive_plot.png"),
 #' save_clean_data = TRUE
 #' )
 #' print(mouse_digestive_plot$plot)
@@ -193,7 +193,7 @@
 #' title = "Organelle Expression Visualization",
 #' organbar_title = "Expression Level",
 #' save_plot = TRUE,
-#' plot_path = file.path(getwd(), "organelle_expression_plot.png")
+#' plot_path = file.path(tempdir(), "organelle_expression_plot.png")
 #')
 #'
 #' @details 
@@ -255,8 +255,8 @@ OrgHeatmap <- function(data,
                        direction = 1,
                        save_clean_data = FALSE,
                        save_plot = FALSE,
-                       clean_data_path = file.path(getwd(), "clean_data.rds"),  
-                       plot_path = file.path(getwd(), "organ_plot.png"),        
+                       clean_data_path = NULL,  
+                       plot_path = NULL,       
                        plot_width = 10,
                        plot_height = 8,
                        plot_dpi = 300,
@@ -323,7 +323,7 @@ OrgHeatmap <- function(data,
           as.data.frame() %>%
           dplyr::rename(x = X, y = Y) %>%
           dplyr::mutate(
-            id = sub$id[1],  # Retain segment id
+            id = sub$id[1], # Retain segment id
             V1 = 1:nrow(.)   # Regenerate index (avoid original index chaos)
           )
         
@@ -840,10 +840,10 @@ OrgHeatmap <- function(data,
     if (!is.null(system) && species != "organelle") {
       system <- tolower(system)
       system_organs <- unique(organ_system_map$organ[organ_system_map$system == system])
-     
-       if (length(system_organs) == 0) {
+      
+      if (length(system_organs) == 0) {
         stop(paste("No organs/organelles found for system:", system))
-       }
+      }
       
       missing_in_system <- setdiff(system_organs, names(current_organ_coord))
       if (length(missing_in_system) > 0) {
@@ -1199,6 +1199,27 @@ OrgHeatmap <- function(data,
   # Print final plot
   if (!is.null(final_plot)) {
     print(final_plot)
+  }
+  
+  
+  if (save_clean_data) {
+    if (is.null(clean_data_path)) {
+      clean_data_path <- file.path(tempdir(), paste0("clean_data_", sample(1:10000, 1), ".rds"))
+    } else {
+      if (!dir.exists(dirname(clean_data_path))) {
+        dir.create(dirname(clean_data_path), recursive = TRUE, showWarnings = FALSE)
+      }
+    }
+  }
+  
+  if (save_plot) {
+    if (is.null(plot_path)) {
+      plot_path <- file.path(tempdir(), paste0("plot_", sample(1:10000, 1), ".png"))
+    } else {
+      if (!dir.exists(dirname(plot_path))) {
+        dir.create(dirname(plot_path), recursive = TRUE, showWarnings = FALSE)
+      }
+    }
   }
   
   # Call internal saving function

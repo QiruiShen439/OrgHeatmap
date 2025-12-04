@@ -30,8 +30,8 @@ OrgHeatmap(
   direction = 1,
   save_clean_data = FALSE,
   save_plot = FALSE,
-  clean_data_path = file.path(getwd(), "clean_data.rds"),
-  plot_path = file.path(getwd(), "organ_plot.png"),
+  clean_data_path = NULL,
+  plot_path = NULL,
   plot_width = 10,
   plot_height = 8,
   plot_dpi = 300,
@@ -170,11 +170,11 @@ result_all <- OrgHeatmap(
   example_Data3, 
   organbar = TRUE,
   save_plot = TRUE,  # Enable plot saving
-  plot_path = file.path(getwd(), "all_system.png"),  # Save to current directory
+  plot_path = file.path(tempdir(), "all_system.png"),  
   plot_width = 10,
   plot_height = 8,
   save_clean_data = TRUE,  # Enable cleaned data saving
-  clean_data_path = file.path(getwd(), "all_system_clean_data.rds")
+  clean_data_path = file.path(tempdir(), "all_system_clean_data.rds")
 )
 print(result_all$plot)  # Print the plot to the console
 
@@ -184,12 +184,12 @@ result_circulatory <- OrgHeatmap(
   system = "circulatory",
  organbar = TRUE,
   save_plot = TRUE,
- plot_path = file.path(getwd(), "circulatory_system.png"),
+ plot_path = file.path(tempdir(), "circulatory_system.png"),
  plot_width = 10,
   plot_height = 8,
   plot_device = "png",  # Specify plot format
   save_clean_data = TRUE,
-  clean_data_path = file.path(getwd(), "circulatory_clean_data.rds")
+  clean_data_path = file.path(tempdir(), "circulatory_clean_data.rds")
 )
 print(result_circulatory$plot)  # Print the plot to the console
 
@@ -207,7 +207,7 @@ organbar_title = "Mean Value",
 organbar_digit = 2,
 showall = TRUE,
 save_plot = TRUE,
-plot_path = file.path(getwd(), "respiratory_palette.png")
+plot_path = file.path(tempdir(),"respiratory_palette.png")
   # To use solid color for bars, add parameter: organbar_color = "skyblue"
   # (overrides gradient and synchronizes with organ colors)
 )
@@ -250,12 +250,12 @@ tp53_plot <- OrgHeatmap(
   organbar_digit = 2,  # Keep 2 decimal places for bar values
   direction = -1,  # Reverse color gradient (darker = higher expression)
   save_plot = TRUE,  # Save the plot
-  plot_path = file.path(getwd(), "tp53_expression_metastatic_prostate.png"),
+  plot_path = file.path(tempdir(), "tp53_expression_metastatic_prostate.png"),
   plot_width = 14,
   plot_height = 10,
   plot_dpi = 300,
   save_clean_data = TRUE,  # Save cleaned data
-  clean_data_path = file.path(getwd(), "tp53_clean_data.rds")
+  clean_data_path = file.path(tempdir(), "tp53_clean_data.rds")
 )
 
 # Print the plot
@@ -274,7 +274,7 @@ system = "digestive",
 organbar = TRUE,
 palette = "PuBu",
 save_plot = TRUE,
-plot_path = file.path(getwd(), "mouse_digestive_plot.png"),
+plot_path = file.path(tempdir(), "mouse_digestive_plot.png"),
 save_clean_data = TRUE
 )
 print(mouse_digestive_plot$plot)
@@ -292,7 +292,7 @@ organelle_plot <- OrgHeatmap(
 title = "Organelle Expression Visualization",
 organbar_title = "Expression Level",
 save_plot = TRUE,
-plot_path = file.path(getwd(), "organelle_expression_plot.png")
+plot_path = file.path(tempdir(), "organelle_expression_plot.png")
 )
 
 }

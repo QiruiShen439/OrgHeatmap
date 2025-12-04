@@ -41,7 +41,10 @@ test_that("Organ System Filtering - Human + Mouse + Organelle (No System for Org
     organ = c("heart", "liver", "brain"),
     value = c(10, 20,  5)
   )
-  human_circulatory <- OrgHeatmap(human_data, system = "circulatory", save_plot = FALSE)
+  expect_warning(
+    human_circulatory <- OrgHeatmap(human_data, system = "circulatory", save_plot = FALSE),
+    "have no coordinate data"
+  )
   expect_equal(human_circulatory$system_used, "circulatory")
   expect_true("heart" %in% human_circulatory$clean_data$organ)
   
@@ -198,11 +201,10 @@ test_that("Bar Chart Functionality - Gradient + Solid Color (Human + Organelle)"
       organelle_bar_data, 
       species = "organelle", 
       organbar = TRUE, 
-      organbar_color = "skyblue",  # 条形图使用纯色
+      organbar_color = "skyblue",  
       save_plot = FALSE
     )
   )
-  # 验证条形图成功创建
   expect_true(!is.null(solid_bar$plot))
   expect_s3_class(solid_bar$plot, c("gg", "ggplot", "patchwork"))
 })
@@ -274,7 +276,6 @@ test_that("Color Configuration and Priority Test", {
   )
   expect_true(!is.null(result_fallback$plot))
   
-  # 验证所有图表都具有正确的类
   expect_s3_class(result_bar_color$plot, c("gg", "ggplot", "patchwork"))
   expect_s3_class(result_priority$plot, c("gg", "ggplot"))
   expect_s3_class(result_palette$plot, c("gg", "ggplot"))
@@ -371,13 +372,12 @@ test_that("Display Options - showall + outline (Human + Organelle)", {
   )
   expect_true(!is.null(organelle_showall$plot))
   
-  # 3. outline=FALSE (隐藏轮廓)
+  # 3. outline=FALSE 
   expect_silent(
     no_outline <- OrgHeatmap(test_data, outline = FALSE, save_plot = FALSE)
   )
   expect_true(!is.null(no_outline$plot))
   
-  # 验证所有图表都成功生成
   expect_s3_class(human_showall$plot, c("gg", "ggplot"))
   expect_s3_class(organelle_showall$plot, c("gg", "ggplot"))
   expect_s3_class(no_outline$plot, c("gg", "ggplot"))
@@ -447,11 +447,14 @@ test_that("Custom Organ System Mapping (dataframe format)", {
     value = c(10, 20, 15)
   )
   
-  result <- OrgHeatmap(
-    test_data,
-    system = "custom_system",
-    organ_system_map = custom_system_map,
-    save_plot = FALSE
+  expect_warning(
+    result <- OrgHeatmap(
+      test_data,
+      system = "custom_system",
+      organ_system_map = custom_system_map,
+      save_plot = FALSE
+    ),
+    "have no coordinate data"
   )
   
   # Validate custom system
@@ -481,10 +484,13 @@ test_that("Custom Organ System Mapping (CSV file path)", {
     value = c(10, 20, 15)
   )
   
-  result_csv_map <- OrgHeatmap(
-    test_data,
-    system = "my_system",
-    organ_system_map = temp_csv
+  expect_warning(
+    result_csv_map <- OrgHeatmap(
+      test_data,
+      system = "my_system",
+      organ_system_map = temp_csv
+    ),
+    "have no coordinate data"
   )
   
   # Validate system filtering result
@@ -549,26 +555,28 @@ test_that("Saving Functionality - Multiple Formats + Nested Directories + Organe
   temp_dir <- tempdir()
   
   # 1. Save human organs (PNG + RDS)
-  human_save_plot <- file.path(temp_dir, "human_save.png")
-  human_save_data <- file.path(temp_dir, "human_save.rds")
+  human_plot_path <- file.path(tempdir(), "human_save_plot.png")
+  human_data_path <- file.path(tempdir(), "human_save_data.rds")
+  
   human_save_result <- OrgHeatmap(
     test_data,
     save_plot = TRUE,
-    plot_path = human_save_plot,
+    plot_path = human_plot_path,
     save_clean_data = TRUE,
-    clean_data_path = human_save_data,
-    plot_device = "png",
+    clean_data_path = human_data_path,
     plot_width = 8,
     plot_height = 6
   )
-  expect_true(file.exists(human_save_plot))
-  expect_true(file.exists(human_save_data))
-  saved_human_data <- readRDS(human_save_data)
+  expect_true(file.exists(human_plot_path))  
+  expect_true(file.exists(human_data_path))
+  saved_human_data <- readRDS(human_data_path)
   expect_equal(saved_human_data, human_save_result$clean_data)
   
+  
+  
   # 2. Save organelles (PDF + SVG)
-  organelle_save_pdf <- file.path(temp_dir, "organelle_save.pdf")
-  organelle_save_svg <- file.path(temp_dir, "organelle_save.svg")
+  organelle_pdf_path <- file.path(tempdir(), "organelle_save.pdf")  
+  organelle_svg_path <- file.path(tempdir(), "organelle_save.svg")  
   organelle_data <- data.frame(organ = "nucleus", value = 8.7)
   
   # PDF save
@@ -576,34 +584,36 @@ test_that("Saving Functionality - Multiple Formats + Nested Directories + Organe
     organelle_data,
     species = "organelle",
     save_plot = TRUE,
-    plot_path = organelle_save_pdf,
+    plot_path = organelle_pdf_path, 
     plot_device = "pdf"
   )
-  expect_true(file.exists(organelle_save_pdf))
+  expect_true(file.exists(organelle_pdf_path))
   
   # SVG save
   OrgHeatmap(
     organelle_data,
     species = "organelle",
     save_plot = TRUE,
-    plot_path = organelle_save_svg,
+    plot_path = organelle_svg_path, 
     plot_device = "svg"
   )
-  expect_true(file.exists(organelle_save_svg))
+  expect_true(file.exists(organelle_svg_path))
   
   # 3. Save to nested directory (auto-create)
-  nested_plot <- file.path(temp_dir, "nested", "subdir", "organ_plot.png")
+  nested_plot_path <- file.path(tempdir(), "nested", "subdir", "organ_plot.png") 
+  nested_data_path <- file.path(tempdir(), "nested", "subdir", "organ_data.rds")
+  
   OrgHeatmap(
     test_data,
     save_plot = TRUE,
-    plot_path = nested_plot,
+    plot_path = nested_plot_path,
     save_clean_data = TRUE,
-    clean_data_path = file.path(temp_dir, "nested", "subdir", "organ_data.rds")
+    clean_data_path = nested_data_path
   )
-  expect_true(file.exists(nested_plot))
+  expect_true(file.exists(nested_plot_path))
   
   # Clean up
-  unlink(c(human_save_plot, human_save_data, organelle_save_pdf, organelle_save_svg))
-  unlink(file.path(temp_dir, "nested"), recursive = TRUE)
+  unlink(c(human_plot_path, human_data_path, organelle_pdf_path, organelle_svg_path))
+  unlink(file.path(tempdir(), "nested"), recursive = TRUE)
 })
 

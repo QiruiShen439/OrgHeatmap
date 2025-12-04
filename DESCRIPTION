@@ -1,11 +1,11 @@
 Package: OrgHeatmap
-Title: Visualization Tool For Numerical Data on Human/Mouse Organs and Organelles
-Version: 0.3.0
+Title: Visualization Tool for Numerical Data on Human/Mouse Organs and Organelles
+Version: 0.3.1
 Authors@R: 
     person("Qirui", "Shen", ,"shenqr@i.smu.edu.cn", role = c("aut", "cre"))
-Description: A tool for visualizing numerical data (e.g., gene expression, protein abundance) on pre-defined anatomical maps of human/mouse organs and subcellular organelles. It supportscustomization of color schemes, filtering by organ systems (for organisms) or organelle types, and generation of optional bar charts for quantitative comparison. The package integrates coordinate data for organs and organelles to plot anatomical/subcellular contours, mapping data values to specific structures for intuitive visualization of biological data distribution.The underlying method was described in the preprint by Zhou et al. (2022) <doi:10.1101/2022.09.07.506938>.
+Description: A tool for visualizing numerical data (e.g., gene expression, protein abundance) on predefined anatomical maps of human/mouse organs and subcellular organelles. It supports customization of color schemes, filtering by organ systems (for organisms) or organelle types, and generation of optional bar charts for quantitative comparison. The package integrates coordinate data for organs and organelles to plot anatomical/subcellular contours, mapping data values to specific structures for intuitive visualization of biological data distribution.The underlying method was described in the preprint by Zhou et al. (2022) <doi:10.1101/2022.09.07.506938>.
 Depends:
-  R (>= 3.5),
+  R (>= 4.1.0),
   ggplot2 (>= 3.5.0)
 Imports:
   ggpolypath(>= 0.3.0),
@@ -35,3 +35,4 @@ RoxygenNote: 7.3.2
 LazyData: true
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+

@@ -1,3 +1,12 @@
+# OrgHeatmap 0.3.1
+*   Resubmission to CRAN addressing feedback from the CRAN team.
+*  **CRAN-required changes:**
+    * Corrected spelling in DESCRIPTION field: fixed "pre", and "supportscustomization"
+    * Addressed potential spelling issues by including a WORDLIST file for terms: 'subcellular'
+    * Updated Title field to proper title case: "Visualization Tool for Numerical Data on Human/Mouse Organs and Organelles"
+    * Removed non-standard file 'organelle_expression_plot.png' from package directory
+    
+    
 # OrgHeatmap 0.3.0
 *   **Added subcellular organelle visualization support** (new visualization type "organelle").
 *   Integrated subcellular organelle coordinate data to enable plotting of subcellular contours.
@@ -9,7 +18,7 @@
 # OrgHeatmap 0.2.0
 *    Added mouse organ visualization support (new species "mouse")
 *    Updated organ system mapping for mouse (mouse_organ_systems)
-#*    Added mouse-specific example data in extdata/
+*    Added mouse-specific example data in extdata/
 
 
 # OrgHeatmap 0.1.2

@@ -37,7 +37,7 @@ library(OrgHeatmap)
 ### 2.1 Package Installation
 ```r
 # Install from local source
-install.packages("OrgHeatmap_0.3.0.tar.gz", repos = NULL, type = "source")
+install.packages("OrgHeatmap_0.3.1.tar.gz", repos = NULL, type = "source")
 
 # Or install from GitHub
 # devtools::install_github("QiruiShen439/OrgHeatmap")
@@ -298,17 +298,17 @@ custom_col_result <- OrgHeatmap(
 save_result <- OrgHeatmap(
   data = example_Data3,
   save_plot = TRUE,
-  plot_path = "my_visualization.png",
+  plot_path = file.path(tempdir(), "my_visualization.png"),
   plot_width = 12,
   plot_height = 10,
   plot_dpi = 300,
   save_clean_data = TRUE,
-  clean_data_path = "cleaned_data.rds",
+  clean_data_path = file.path(tempdir(), "cleaned_data.rds"), 
   title = "Saved Visualization"
 )
 
 # Access saved files
-list.files(pattern = "my_visualization|cleaned_data")
+list.files(path = tempdir(),pattern = "my_visualization|cleaned_data")
 ```
 
 
@@ -392,7 +392,7 @@ filtered_plot <- OrgHeatmap(
 publication_plot <- OrgHeatmap(
   data = example_Data3,
   save_plot = TRUE,
-  plot_path = "publication_figure.tiff",
+  plot_path = file.path(tempdir(), "publication_figure.tiff"), 
   plot_width = 8,
   plot_height = 6,
   plot_dpi = 600,
