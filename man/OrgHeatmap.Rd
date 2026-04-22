@@ -25,6 +25,7 @@ OrgHeatmap(
   organbar_title = NULL,
   organbar_digit = 4,
   organbar_color = NULL,
+  organbar_text_color = "black",
   organbar_low = NULL,
   organbar_high = NULL,
   direction = 1,
@@ -59,7 +60,7 @@ Determines the default body/cell contour, organ coordinates, and organ-system ma
 
 \item{showall}{Logical, default FALSE. If TRUE, shows all organ outlines (grey) with light grey fill (#EFEFEF) for non-target organs (to provide anatomical context).}
 
-\item{outline}{Logical, default TRUE, draws human/cell outline}
+\item{outline}{Logical, default TRUE, draws human/mouse/cell outline}
 
 \item{palette}{Character, name of RColorBrewer palette (e.g., "YlOrRd", "PuBuGn") for unified color scheme (applies to both organ heatmap and bar chart if no custom colors are specified).
 Ignored if \code{color_low}/\code{color_high} (for heatmap) or \code{organbar_low}/\code{organbar_high} (for bar chart) are specified. Default: "YlOrRd" (suitable for highlighting high values).}
@@ -85,6 +86,8 @@ Ignored if \code{color_low}/\code{color_high} (for heatmap) or \code{organbar_lo
 \item{organbar_digit}{Integer, default 4, digits for bar values}
 
 \item{organbar_color}{Optional character, solid color for bars}
+
+\item{organbar_text_color}{Character. The text color for the organ bar chart values. Default is "black".}
 
 \item{organbar_low}{Character, low end of gradient for \strong{bar chart} (and organ heatmap if \code{color_low} is not specified). Highest priority for color configuration (overrides \code{color_low} and \code{palette}). Default: NULL.}
 
@@ -275,7 +278,8 @@ organbar = TRUE,
 palette = "PuBu",
 save_plot = TRUE,
 plot_path = file.path(tempdir(), "mouse_digestive_plot.png"),
-save_clean_data = TRUE
+save_clean_data = TRUE,
+clean_data_path = file.path(tempdir(), "mouse_digestive_data.rds")
 )
 print(mouse_digestive_plot$plot)
 }

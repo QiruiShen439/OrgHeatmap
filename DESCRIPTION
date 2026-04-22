@@ -1,6 +1,6 @@
 Package: OrgHeatmap
 Title: Visualization Tool for Numerical Data on Human/Mouse Organs and Organelles
-Version: 0.3.2
+Version: 0.3.4
 Authors@R: 
     person("Qirui", "Shen", email = "shenqr@i.smu.edu.cn", role = c("aut", "cre"))
 Author: Qirui Shen [aut, cre]
@@ -11,7 +11,7 @@ Depends:
     ggplot2 (>= 3.5.0)
 Imports:
     ggpolypath (>= 0.3.0),
-    dplyr,
+    dplyr (>= 1.1.0),
     magrittr,
     rlang,
     stringr,
@@ -33,7 +33,7 @@ Suggests:
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 LazyData: true
 Config/testthat/edition: 3
 VignetteBuilder: knitr
